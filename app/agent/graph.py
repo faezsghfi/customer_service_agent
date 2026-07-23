@@ -1,9 +1,6 @@
 
-from langgraph.graph import (
-    StateGraph,
-    START,
-    END
-)
+from langgraph.graph import StateGraph, START, END
+from langgraph.checkpoint.memory import MemorySaver
 
 from app.agent.state import AgentState
 
@@ -15,79 +12,68 @@ from app.agent.nodes import (
 )
 
 
+memory = MemorySaver()
+
 
 def build_graph():
 
-    graph = StateGraph(
-        AgentState
-    )
+    workflow = StateGraph(AgentState)
 
 
-    # Nodes
-
-    graph.add_node(
+    workflow.add_node(
         "router",
         router_node
     )
 
-
-    graph.add_node(
+    workflow.add_node(
         "chat",
         chat_node
     )
 
-
-    graph.add_node(
+    workflow.add_node(
         "api",
         api_node
     )
 
-
-    graph.add_node(
+    workflow.add_node(
         "rag",
         rag_node
     )
 
 
-    # Start
-
-    graph.add_edge(
+    workflow.add_edge(
         START,
         "router"
     )
 
 
-    # Conditional routing
-
-    graph.add_conditional_edges(
+    workflow.add_conditional_edges(
         "router",
-
         lambda state: state["route"],
-
         {
-            "chat":"chat",
-            "api":"api",
-            "rag":"rag"
+            "chat": "chat",
+            "api": "api",
+            "rag": "rag"
         }
     )
 
 
-    # End edges
-
-    graph.add_edge(
+    workflow.add_edge(
         "chat",
         END
     )
 
-    graph.add_edge(
+    workflow.add_edge(
         "api",
         END
     )
 
-    graph.add_edge(
+    workflow.add_edge(
         "rag",
         END
     )
 
 
-    return graph.compile()
+    return workflow.compile(
+        checkpointer=memory
+    )
