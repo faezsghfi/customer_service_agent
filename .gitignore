@@ -1,0 +1,16 @@
+
+.env
+
+__pycache__/
+
+*.pyc
+
+.ipynb_checkpoints/
+
+*.ipynb
+
+data/raw/
+
+.qdrant/
+
+*.log
