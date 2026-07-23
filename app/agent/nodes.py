@@ -5,11 +5,11 @@ from app.models.llm import get_llm
 from app.agent.router import classify_intent
 from app.tools.order_api import get_order_status
 
+from app.rag.pipeline import run_rag
+
+
 
 def router_node(state):
-    """
-    Decide next path.
-    """
 
     last_message = state["messages"][-1]
 
@@ -24,9 +24,6 @@ def router_node(state):
 
 
 def chat_node(state):
-    """
-    Normal conversation.
-    """
 
     llm = get_llm()
 
@@ -35,26 +32,30 @@ def chat_node(state):
     )
 
     return {
+
         "messages": [
             response
-        ]
+        ],
+
+        "answer": response.content
     }
 
 
 
 def api_node(state):
-    """
-    Call external order API tool.
-    """
 
     user_message = state["messages"][-1].content
 
 
     order_id = None
 
+
     for token in user_message.split():
+
         if token.isdigit():
+
             order_id = token
+
 
 
     if order_id is None:
@@ -71,28 +72,41 @@ def api_node(state):
 
 
     return {
+
         "messages": [
             HumanMessage(
                 content=str(result)
             )
         ],
 
-        "tool_result": str(result)
+        "tool_result": str(result),
+
+        "answer": str(result)
     }
 
 
 
 def rag_node(state):
-    """
-    Temporary node.
-    Will be replaced in Advanced RAG phase.
-    """
+
+    user_message = state["messages"][-1].content
+
+
+    result = run_rag(
+        user_message
+    )
+
 
     return {
-        "messages":[
+
+        "messages": [
             HumanMessage(
-                content=
-                "RAG module is not implemented yet."
+                content=result
             )
+        ],
+
+        "answer": result,
+
+        "context": [
+            result
         ]
     }
