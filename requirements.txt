@@ -9,6 +9,11 @@ langchain-qdrant>=0.2
 
 qdrant-client>=1.14
 
+FlagEmbedding==1.3.5
+transformers==4.45.2
+tokenizers==0.20.1
+accelerate
+
 sentence-transformers>=3.0
 
 fastapi
@@ -25,3 +30,7 @@ httpx
 tenacity
 
 tiktoken
+
+
+fastapi 
+uvicorn

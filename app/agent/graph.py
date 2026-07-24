@@ -11,17 +11,11 @@ from app.agent.nodes import (
     rag_node
 )
 
-from app.agent.guardrail_node import (
-    input_guardrail_node
-)
-
-from app.agent.output_guardrail_node import (
-    output_guardrail_node
-)
+from app.agent.guardrail_node import input_guardrail_node
+from app.agent.output_guardrail_node import output_guardrail_node
 
 
 memory = MemorySaver()
-
 
 
 def build_graph():
@@ -36,30 +30,25 @@ def build_graph():
         input_guardrail_node
     )
 
-
     workflow.add_node(
         "router",
         router_node
     )
-
 
     workflow.add_node(
         "chat",
         chat_node
     )
 
-
     workflow.add_node(
         "api",
         api_node
     )
 
-
     workflow.add_node(
         "rag",
         rag_node
     )
-
 
     workflow.add_node(
         "output_guardrail",
@@ -73,13 +62,9 @@ def build_graph():
     )
 
 
-    workflow.add_conditional_edges(
+    workflow.add_edge(
         "guardrail",
-        lambda state: state["route"],
-        {
-            "allowed": "router",
-            "blocked": END
-        }
+        "router"
     )
 
 
@@ -99,18 +84,15 @@ def build_graph():
         END
     )
 
-
     workflow.add_edge(
         "api",
         END
     )
 
-
     workflow.add_edge(
         "rag",
         "output_guardrail"
     )
-
 
     workflow.add_edge(
         "output_guardrail",

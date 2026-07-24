@@ -32,11 +32,9 @@ def chat_node(state):
     )
 
     return {
-
         "messages": [
             response
         ],
-
         "answer": response.content
     }
 
@@ -46,16 +44,13 @@ def api_node(state):
 
     user_message = state["messages"][-1].content
 
-
     order_id = None
-
 
     for token in user_message.split():
 
         if token.isdigit():
 
             order_id = token
-
 
 
     if order_id is None:
@@ -72,15 +67,12 @@ def api_node(state):
 
 
     return {
-
         "messages": [
             HumanMessage(
                 content=str(result)
             )
         ],
-
         "tool_result": str(result),
-
         "answer": str(result)
     }
 
@@ -90,22 +82,17 @@ def rag_node(state):
 
     user_message = state["messages"][-1].content
 
-
     result = run_rag(
         user_message
     )
 
-
     return {
-
         "messages": [
             HumanMessage(
                 content=result
             )
         ],
-
         "answer": result,
-
         "context": [
             result
         ]

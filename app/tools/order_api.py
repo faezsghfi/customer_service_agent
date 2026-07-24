@@ -1,65 +1,54 @@
 
-
-import sqlite3
+import requests
 
 from langchain_core.tools import tool
 
 
-
-DB_PATH = "data/orders.db"
+API_URL = "http://localhost:8000/orders"
 
 
 
 @tool
-def get_order_status(order_id: str) -> dict:
+def get_order_status(order_id: str):
     """
-    Get order status from database.
-
-    Returns order information or 404 error.
+    Get order status from Mock FastAPI Order API.
     """
 
 
-    connection = sqlite3.connect(DB_PATH)
+    try:
 
-    cursor = connection.cursor()
-
-
-    cursor.execute(
-        """
-        SELECT *
-        FROM orders
-        WHERE order_id = ?
-        """,
-        (order_id,)
-    )
+        response = requests.get(
+            f"{API_URL}/{order_id}"
+        )
 
 
-    result = cursor.fetchone()
+        if response.status_code == 200:
+
+            return response.json()
 
 
-    connection.close()
+
+        elif response.status_code == 404:
+
+            return {
+                "code": 404,
+                "message": "Order Not Found"
+            }
 
 
-    # simulate 404
-    if result is None:
+
+        else:
+
+            return {
+                "code": response.status_code,
+                "message": response.text
+            }
+
+
+
+    except Exception as e:
 
         return {
-            "status_code": 404,
-            "message": "Order Not Found"
+            "code": 500,
+            "message": str(e)
         }
-
-
-    return {
-
-        "status_code": 200,
-
-        "order_id": result[0],
-
-        "status": result[1],
-
-        "tracking_code": result[2],
-
-        "estimated_time": result[3],
-
-        "cancel_reason": result[4]
-    }
