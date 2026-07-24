@@ -1,11 +1,11 @@
 
+import re
+
 from langchain_core.messages import HumanMessage
 
 from app.models.llm import get_llm
 from app.agent.router import classify_intent
 from app.tools.order_api import get_order_status
-
-from app.rag.pipeline import run_rag
 
 
 
@@ -42,22 +42,28 @@ def chat_node(state):
 
 def api_node(state):
 
-    user_message = state["messages"][-1].content
-
-    order_id = None
-
-    for token in user_message.split():
-
-        if token.isdigit():
-
-            order_id = token
+    order_id = state.get(
+        "order_id",
+        ""
+    )
 
 
-    if order_id is None:
+    # اگر قبلا ذخیره شده باشد استفاده کن
+    if not order_id:
 
-        result = "شماره سفارش پیدا نشد."
+        for msg in state["messages"]:
 
-    else:
+            ids = re.findall(
+                r"\b\d{4}\b",
+                msg.content
+            )
+
+            if ids:
+                order_id = ids[-1]
+
+
+
+    if order_id:
 
         result = get_order_status.invoke(
             {
@@ -65,35 +71,38 @@ def api_node(state):
             }
         )
 
+    else:
+
+        result = {
+            "code": 400,
+            "message": "شماره سفارش پیدا نشد."
+        }
+
+
 
     return {
+
         "messages": [
             HumanMessage(
                 content=str(result)
             )
         ],
+
         "tool_result": str(result),
-        "answer": str(result)
+
+        "order_id": order_id
     }
 
 
 
 def rag_node(state):
 
-    user_message = state["messages"][-1].content
-
-    result = run_rag(
-        user_message
-    )
-
     return {
+
         "messages": [
             HumanMessage(
-                content=result
+                content="RAG response"
             )
-        ],
-        "answer": result,
-        "context": [
-            result
         ]
+
     }
