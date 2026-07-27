@@ -16,7 +16,14 @@ from app.rag.hybrid import reciprocal_rank_fusion
 from app.rag.reranker import rerank
 from app.rag.guardrail import validate_context
 from app.rag.prompt import RAG_PROMPT
-
+from app.core.logger import (
+    section,
+    thought,
+    action,
+    observation,
+    success,
+    error,
+)
 
 
 _vectorstore = None
@@ -69,31 +76,27 @@ def run_rag(query):
 
     initialize_rag()
 
+    section("RAG PIPELINE")
+    thought("Searching knowledge base")
+    observation(f"Question: {query}")
 
-    dense_results = _vectorstore.similarity_search(
-        query,
-        k=5
-    )
+    action("Dense Retrieval")
+    dense_results = _vectorstore.similarity_search(query,k=5)
+    observation(f"Dense documents: {len(dense_results)}")
 
+    action("Sparse Retrieval (BM25)")
+    sparse_results = _bm25.invoke(query)
+    observation(f"Sparse documents: {len(sparse_results)}")
 
-    sparse_results = _bm25.invoke(
-        query
-    )
+    action("Hybrid Fusion")
+    hybrid_results = reciprocal_rank_fusion(dense_results,sparse_results)
+    observation(f"Hybrid documents: {len(hybrid_results)}")
 
+    action("Reranking")
+    ranked_results = rerank(query,hybrid_results,top_k=3)
+    observation(f"Top documents: {len(ranked_results)}")
 
-    hybrid_results = reciprocal_rank_fusion(
-        dense_results,
-        sparse_results
-    )
-
-
-    ranked_results = rerank(
-        query,
-        hybrid_results,
-        top_k=3
-    )
-
-
+    action("Building Context")
     parent_ids = []
     child_context = []
 
@@ -139,31 +142,32 @@ def run_rag(query):
 
         context = child_context
 
+    observation(f"Context chunks: {len(context)}")
 
 
+    action("Input Guardrail")
     validation = validate_context(
         context
     )
 
-
+  
     # --------------------------
     # Support different guardrail outputs
     # --------------------------
 
     if isinstance(validation, dict):
 
-        if not validation.get(
-            "allowed",
-            False
-        ):
+        if not validation.get("allowed", False):
 
-            return "اطلاعات کافی در پایگاه دانش موجود نیست."
+            error("Context rejected")
 
+            return {
+                "answer": "اطلاعات کافی در پایگاه دانش موجود نیست.",
+                "context": []
+            }
 
-        final_context = "\n\n".join(
-            validation["context"]
-        )
-
+        success("Context accepted")
+        final_context = context
 
     else:
 
@@ -173,18 +177,16 @@ def run_rag(query):
 
 
 
-    prompt = RAG_PROMPT.format(
-        context=final_context,
-        question=query
-    )
+    messages = RAG_PROMPT.format_messages(context=final_context,question=query)
 
-
+    action("Generating Answer")
     llm = get_llm()
 
+    response = llm.invoke(messages)
+    success("Answer generated")
 
-    response = llm.invoke(
-        prompt
-    )
-
-
-    return response.content
+    success("RAG Pipeline Finished")
+    return {
+        "answer": response.content,
+        "context": context
+    }

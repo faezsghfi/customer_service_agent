@@ -16,6 +16,8 @@ accelerate
 
 sentence-transformers>=3.0
 
+huggingface-hub==0.25.2
+
 fastapi
 uvicorn
 
@@ -31,6 +33,11 @@ tenacity
 
 tiktoken
 
+rank_bm25
+
+gradio
+
+pypdf
 
 fastapi 
 uvicorn

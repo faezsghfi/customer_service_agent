@@ -1,0 +1,241 @@
+03:53:28 | INFO     | ================================================================================
+03:53:28 | INFO     | NEW REQUEST
+03:53:28 | INFO     | ================================================================================
+03:53:28 | INFO     | 👀 OBSERVATION | User message: سلام
+03:53:28 | INFO     | ================================================================================
+03:53:28 | INFO     | INPUT GUARDRAIL NODE
+03:53:28 | INFO     | ================================================================================
+03:53:28 | INFO     | 👀 OBSERVATION | User query: سلام
+03:53:28 | INFO     | ⚙️ ACTION      | Validating input against guardrail rules
+03:53:28 | INFO     | 👀 OBSERVATION | Validation result: {'allowed': True, 'reason': None}
+03:53:28 | INFO     | ✅ SUCCESS     | Input passed guardrail checks
+03:53:28 | INFO     | ================================================================================
+03:53:28 | INFO     | ROUTER NODE
+03:53:28 | INFO     | ================================================================================
+03:53:28 | INFO     | 🧠 THOUGHT     | Analyzing user intent to decide the next execution path.
+03:53:28 | INFO     | 👀 OBSERVATION | User message: سلام
+03:53:28 | INFO     | ⚙️ ACTION      | Classifying user intent
+03:53:30 | INFO     | HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+03:53:30 | INFO     | 👀 OBSERVATION | Selected route: chat
+03:53:30 | INFO     | ✅ SUCCESS     | Routing decision accepted: chat
+03:53:30 | INFO     | ✅ SUCCESS     | ROUTER NODE finished
+03:53:30 | INFO     | ================================================================================
+03:53:30 | INFO     | CHAT NODE
+03:53:30 | INFO     | ================================================================================
+03:53:30 | INFO     | 🧠 THOUGHT     | User request does not require external tools, generating a direct response with LLM.
+03:53:30 | INFO     | 👀 OBSERVATION | Messages count: 1
+03:53:30 | INFO     | ⚙️ ACTION      | Calling LLM
+03:53:31 | INFO     | HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+03:53:31 | INFO     | ✅ SUCCESS     | LLM response generated successfully
+03:53:31 | INFO     | 👀 OBSERVATION | Response length: 5 words
+03:53:31 | INFO     | ✅ SUCCESS     | CHAT NODE finished
+03:53:41 | INFO     | ================================================================================
+03:53:41 | INFO     | NEW REQUEST
+03:53:41 | INFO     | ================================================================================
+03:53:41 | INFO     | 👀 OBSERVATION | User message: میدونی پایتخت فرانسه کجاست؟
+03:53:41 | INFO     | ================================================================================
+03:53:41 | INFO     | INPUT GUARDRAIL NODE
+03:53:41 | INFO     | ================================================================================
+03:53:41 | INFO     | 👀 OBSERVATION | User query: میدونی پایتخت فرانسه کجاست؟
+03:53:41 | INFO     | ⚙️ ACTION      | Validating input against guardrail rules
+03:53:41 | INFO     | 👀 OBSERVATION | Validation result: {'allowed': True, 'reason': None}
+03:53:41 | INFO     | ✅ SUCCESS     | Input passed guardrail checks
+03:53:41 | INFO     | ================================================================================
+03:53:41 | INFO     | ROUTER NODE
+03:53:41 | INFO     | ================================================================================
+03:53:41 | INFO     | 🧠 THOUGHT     | Analyzing user intent to decide the next execution path.
+03:53:41 | INFO     | 👀 OBSERVATION | User message: میدونی پایتخت فرانسه کجاست؟
+03:53:41 | INFO     | ⚙️ ACTION      | Classifying user intent
+03:53:42 | INFO     | HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+03:53:42 | INFO     | 👀 OBSERVATION | Selected route: rag
+03:53:42 | INFO     | ✅ SUCCESS     | Routing decision accepted: rag
+03:53:42 | INFO     | ✅ SUCCESS     | ROUTER NODE finished
+03:53:42 | INFO     | ================================================================================
+03:53:42 | INFO     | RAG NODE
+03:53:42 | INFO     | ================================================================================
+03:53:42 | INFO     | 🧠 THOUGHT     | Knowledge Base is required to answer this question.
+03:53:42 | INFO     | 👀 OBSERVATION | Question: میدونی پایتخت فرانسه کجاست؟
+03:53:42 | INFO     | ⚙️ ACTION      | Executing RAG Pipeline
+E:\python workespace\customer service agent\customer_service_agent\app\rag\embeddings.py:10: LangChainDeprecationWarning: The class `HuggingFaceBgeEmbeddings` was deprecated in LangChain 0.2.2 and will be removed in 1.0. An updated version of the class exists in the `langchain-huggingface package and should be used instead. To use it run `pip install -U `langchain-huggingface` and import as `from `langchain_huggingface import HuggingFaceEmbeddings``.
+  model = HuggingFaceBgeEmbeddings(
+03:53:43 | INFO     | Loading SentenceTransformer model from BAAI/bge-m3.
+03:53:59 | INFO     | ================================================================================
+03:53:59 | INFO     | RAG PIPELINE
+03:53:59 | INFO     | ================================================================================
+03:53:59 | INFO     | 🧠 THOUGHT     | Searching knowledge base
+03:53:59 | INFO     | 👀 OBSERVATION | Question: میدونی پایتخت فرانسه کجاست؟
+03:53:59 | INFO     | ⚙️ ACTION      | Dense Retrieval
+03:54:00 | INFO     | 👀 OBSERVATION | Dense documents: 5
+03:54:00 | INFO     | ⚙️ ACTION      | Sparse Retrieval (BM25)
+03:54:00 | INFO     | 👀 OBSERVATION | Sparse documents: 5
+03:54:00 | INFO     | ⚙️ ACTION      | Hybrid Fusion
+03:54:00 | INFO     | 👀 OBSERVATION | Hybrid documents: 8
+03:54:00 | INFO     | ⚙️ ACTION      | Reranking
+You're using a XLMRobertaTokenizerFast tokenizer. Please note that with a fast tokenizer, using the `__call__` method is faster than using a method to encode the text followed by a call to the `pad` method to get a padded encoding.
+03:54:17 | INFO     | 👀 OBSERVATION | Top documents: 3
+03:54:17 | INFO     | ⚙️ ACTION      | Building Context
+03:54:17 | INFO     | 👀 OBSERVATION | Context chunks: 3
+03:54:17 | INFO     | ⚙️ ACTION      | Input Guardrail
+03:54:17 | INFO     | ✅ SUCCESS     | Context accepted
+03:54:17 | INFO     | ⚙️ ACTION      | Generating Answer
+03:54:19 | INFO     | HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+03:54:19 | INFO     | ✅ SUCCESS     | Answer generated
+03:54:19 | INFO     | ✅ SUCCESS     | RAG Pipeline Finished
+03:54:19 | INFO     | ✅ SUCCESS     | RAG Pipeline completed
+03:54:19 | INFO     | 👀 OBSERVATION | Retrieved Context Chunks: 3
+03:54:19 | INFO     | ✅ SUCCESS     | Answer is ready
+03:54:19 | INFO     | ================================================================================
+03:54:19 | INFO     | OUTPUT GUARDRAIL
+03:54:19 | INFO     | ================================================================================
+03:54:19 | INFO     | 🧠 THOUGHT     | Checking generated answer against retrieved context to prevent unsupported responses.
+03:54:19 | INFO     | 👀 OBSERVATION | Answer length: 7 words
+03:54:19 | INFO     | 👀 OBSERVATION | Context chunks: 3
+03:54:19 | INFO     | ⚙️ ACTION      | Checking generated answer
+03:54:19 | INFO     | ⚙️ ACTION      | Checking retrieved context
+03:54:19 | INFO     | ⚙️ ACTION      | Calculating answer-context overlap
+03:54:19 | INFO     | 👀 OBSERVATION | Answer-context overlap score: 0.86
+03:54:19 | INFO     | ⚙️ ACTION      | Validating answer grounding
+03:54:19 | INFO     | ✅ SUCCESS     | Output guardrail passed
+03:55:34 | INFO     | ================================================================================
+03:55:34 | INFO     | NEW REQUEST
+03:55:34 | INFO     | ================================================================================
+03:55:34 | INFO     | 👀 OBSERVATION | User message: شماره ملی من 0370389859 هست
+03:55:34 | INFO     | ================================================================================
+03:55:34 | INFO     | INPUT GUARDRAIL NODE
+03:55:34 | INFO     | ================================================================================
+03:55:34 | INFO     | 👀 OBSERVATION | User query: شماره ملی من 0370389859 هست
+03:55:34 | INFO     | ⚙️ ACTION      | Validating input against guardrail rules
+03:55:34 | INFO     | 👀 OBSERVATION | Validation result: {'allowed': False, 'reason': 'pii', 'types': ['iran_national_id']}
+03:55:34 | WARNING  | ⚠️ WARNING     | Input blocked by guardrail. Reason: pii
+03:56:56 | INFO     | ================================================================================
+03:56:56 | INFO     | NEW REQUEST
+03:56:56 | INFO     | ================================================================================
+03:56:56 | INFO     | 👀 OBSERVATION | User message: "سفارش من 1002 هست
+03:56:56 | INFO     | ================================================================================
+03:56:56 | INFO     | INPUT GUARDRAIL NODE
+03:56:56 | INFO     | ================================================================================
+03:56:56 | INFO     | 👀 OBSERVATION | User query: "سفارش من 1002 هست
+03:56:56 | INFO     | ⚙️ ACTION      | Validating input against guardrail rules
+03:56:56 | INFO     | 👀 OBSERVATION | Validation result: {'allowed': True, 'reason': None}
+03:56:56 | INFO     | ✅ SUCCESS     | Input passed guardrail checks
+03:56:56 | INFO     | ================================================================================
+03:56:56 | INFO     | ROUTER NODE
+03:56:56 | INFO     | ================================================================================
+03:56:56 | INFO     | 🧠 THOUGHT     | Analyzing user intent to decide the next execution path.
+03:56:56 | INFO     | 👀 OBSERVATION | User message: "سفارش من 1002 هست
+03:56:56 | INFO     | ⚙️ ACTION      | Classifying user intent
+03:56:56 | INFO     | HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+03:56:56 | INFO     | 👀 OBSERVATION | Selected route: api
+03:56:56 | INFO     | ✅ SUCCESS     | Routing decision accepted: api
+03:56:56 | INFO     | ✅ SUCCESS     | ROUTER NODE finished
+03:56:56 | INFO     | ================================================================================
+03:56:56 | INFO     | API NODE
+03:56:56 | INFO     | ================================================================================
+03:56:56 | INFO     | 🧠 THOUGHT     | User request requires external order information, checking order_id before calling API.
+03:56:56 | INFO     | 👀 OBSERVATION | User message: "سفارش من 1002 هست
+03:56:56 | INFO     | ⚙️ ACTION      | Searching for order_id inside the last message
+03:56:56 | INFO     | 👀 OBSERVATION | Order ID found in message: 1002
+03:56:56 | INFO     | ⚙️ ACTION      | Preparing API request
+03:56:56 | INFO     | 👀 OBSERVATION | API parameters: order_id=1002
+03:56:56 | INFO     | ⚙️ ACTION      | Calling get_order_status tool
+03:56:58 | INFO     | ✅ SUCCESS     | get_order_status tool executed successfully
+03:56:58 | INFO     | 👀 OBSERVATION | Tool result: {'code': 200, 'order_id': '1002', 'status': 'ارسال شده', 'estimated_time': None, 'tracking_code': '123456789IR', 'cancel_reason': None}
+03:56:58 | INFO     | ✅ SUCCESS     | API NODE finished
+03:57:04 | INFO     | ================================================================================
+03:57:04 | INFO     | NEW REQUEST
+03:57:04 | INFO     | ================================================================================
+03:57:04 | INFO     | 👀 OBSERVATION | User message: کی به دستم میرسه؟
+03:57:04 | INFO     | ================================================================================
+03:57:04 | INFO     | INPUT GUARDRAIL NODE
+03:57:04 | INFO     | ================================================================================
+03:57:04 | INFO     | 👀 OBSERVATION | User query: کی به دستم میرسه؟
+03:57:04 | INFO     | ⚙️ ACTION      | Validating input against guardrail rules
+03:57:04 | INFO     | 👀 OBSERVATION | Validation result: {'allowed': True, 'reason': None}
+03:57:04 | INFO     | ✅ SUCCESS     | Input passed guardrail checks
+03:57:04 | INFO     | ================================================================================
+03:57:04 | INFO     | ROUTER NODE
+03:57:04 | INFO     | ================================================================================
+03:57:04 | INFO     | 🧠 THOUGHT     | Analyzing user intent to decide the next execution path.
+03:57:04 | INFO     | 👀 OBSERVATION | User message: کی به دستم میرسه؟
+03:57:04 | INFO     | ⚙️ ACTION      | Classifying user intent
+03:57:05 | INFO     | HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+03:57:05 | INFO     | 👀 OBSERVATION | Selected route: api
+03:57:05 | INFO     | ✅ SUCCESS     | Routing decision accepted: api
+03:57:05 | INFO     | ✅ SUCCESS     | ROUTER NODE finished
+03:57:05 | INFO     | ================================================================================
+03:57:05 | INFO     | API NODE
+03:57:05 | INFO     | ================================================================================
+03:57:05 | INFO     | 🧠 THOUGHT     | User request requires external order information, checking order_id before calling API.
+03:57:05 | INFO     | 👀 OBSERVATION | User message: کی به دستم میرسه؟
+03:57:05 | INFO     | ⚙️ ACTION      | Searching for order_id inside the last message
+03:57:05 | WARNING  | ⚠️ WARNING     | No order_id found in message, falling back to memory
+03:57:05 | INFO     | 👀 OBSERVATION | Order ID from memory: 1002
+03:57:05 | INFO     | ⚙️ ACTION      | Preparing API request
+03:57:05 | INFO     | 👀 OBSERVATION | API parameters: order_id=1002
+03:57:05 | INFO     | ⚙️ ACTION      | Calling get_order_status tool
+03:57:07 | INFO     | ✅ SUCCESS     | get_order_status tool executed successfully
+03:57:07 | INFO     | 👀 OBSERVATION | Tool result: {'code': 200, 'order_id': '1002', 'status': 'ارسال شده', 'estimated_time': None, 'tracking_code': '123456789IR', 'cancel_reason': None}
+03:57:07 | INFO     | ✅ SUCCESS     | API NODE finished
+03:57:20 | INFO     | ================================================================================
+03:57:20 | INFO     | NEW REQUEST
+03:57:20 | INFO     | ================================================================================
+03:57:20 | INFO     | 👀 OBSERVATION | User message: شرایط مرجوعی کالا چیست
+03:57:20 | INFO     | ================================================================================
+03:57:20 | INFO     | INPUT GUARDRAIL NODE
+03:57:20 | INFO     | ================================================================================
+03:57:20 | INFO     | 👀 OBSERVATION | User query: شرایط مرجوعی کالا چیست
+03:57:20 | INFO     | ⚙️ ACTION      | Validating input against guardrail rules
+03:57:20 | INFO     | 👀 OBSERVATION | Validation result: {'allowed': True, 'reason': None}
+03:57:20 | INFO     | ✅ SUCCESS     | Input passed guardrail checks
+03:57:20 | INFO     | ================================================================================
+03:57:20 | INFO     | ROUTER NODE
+03:57:20 | INFO     | ================================================================================
+03:57:20 | INFO     | 🧠 THOUGHT     | Analyzing user intent to decide the next execution path.
+03:57:20 | INFO     | 👀 OBSERVATION | User message: شرایط مرجوعی کالا چیست
+03:57:20 | INFO     | ⚙️ ACTION      | Classifying user intent
+03:57:22 | INFO     | HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+03:57:22 | INFO     | 👀 OBSERVATION | Selected route: rag
+03:57:22 | INFO     | ✅ SUCCESS     | Routing decision accepted: rag
+03:57:22 | INFO     | ✅ SUCCESS     | ROUTER NODE finished
+03:57:22 | INFO     | ================================================================================
+03:57:22 | INFO     | RAG NODE
+03:57:22 | INFO     | ================================================================================
+03:57:22 | INFO     | 🧠 THOUGHT     | Knowledge Base is required to answer this question.
+03:57:22 | INFO     | 👀 OBSERVATION | Question: شرایط مرجوعی کالا چیست
+03:57:22 | INFO     | ⚙️ ACTION      | Executing RAG Pipeline
+03:57:22 | INFO     | ================================================================================
+03:57:22 | INFO     | RAG PIPELINE
+03:57:22 | INFO     | ================================================================================
+03:57:22 | INFO     | 🧠 THOUGHT     | Searching knowledge base
+03:57:22 | INFO     | 👀 OBSERVATION | Question: شرایط مرجوعی کالا چیست
+03:57:22 | INFO     | ⚙️ ACTION      | Dense Retrieval
+03:57:22 | INFO     | 👀 OBSERVATION | Dense documents: 5
+03:57:22 | INFO     | ⚙️ ACTION      | Sparse Retrieval (BM25)
+03:57:22 | INFO     | 👀 OBSERVATION | Sparse documents: 5
+03:57:22 | INFO     | ⚙️ ACTION      | Hybrid Fusion
+03:57:22 | INFO     | 👀 OBSERVATION | Hybrid documents: 5
+03:57:22 | INFO     | ⚙️ ACTION      | Reranking
+03:57:33 | INFO     | 👀 OBSERVATION | Top documents: 3
+03:57:33 | INFO     | ⚙️ ACTION      | Building Context
+03:57:33 | INFO     | 👀 OBSERVATION | Context chunks: 3
+03:57:33 | INFO     | ⚙️ ACTION      | Input Guardrail
+03:57:33 | INFO     | ✅ SUCCESS     | Context accepted
+03:57:33 | INFO     | ⚙️ ACTION      | Generating Answer
+03:57:35 | INFO     | HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+03:57:35 | INFO     | ✅ SUCCESS     | Answer generated
+03:57:35 | INFO     | ✅ SUCCESS     | RAG Pipeline Finished
+03:57:35 | INFO     | ✅ SUCCESS     | RAG Pipeline completed
+03:57:35 | INFO     | 👀 OBSERVATION | Retrieved Context Chunks: 3
+03:57:35 | INFO     | ✅ SUCCESS     | Answer is ready
+03:57:35 | INFO     | ================================================================================
+03:57:35 | INFO     | OUTPUT GUARDRAIL
+03:57:35 | INFO     | ================================================================================
+03:57:35 | INFO     | 🧠 THOUGHT     | Checking generated answer against retrieved context to prevent unsupported responses.
+03:57:35 | INFO     | 👀 OBSERVATION | Answer length: 38 words
+03:57:35 | INFO     | 👀 OBSERVATION | Context chunks: 3
+03:57:35 | INFO     | ⚙️ ACTION      | Checking generated answer
+03:57:35 | INFO     | ⚙️ ACTION      | Checking retrieved context
+03:57:35 | INFO     | ⚙️ ACTION      | Calculating answer-context overlap
+03:57:35 | INFO     | 👀 OBSERVATION | Answer-context overlap score: 0.77
+03:57:35 | INFO     | ⚙️ ACTION      | Validating answer grounding
+03:57:35 | INFO     | ✅ SUCCESS     | Output guardrail passed

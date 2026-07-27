@@ -168,6 +168,8 @@ python app/ui/chat_app.py
 ---
 
 # نمونه عملکرد
-<img width="1369" height="784" alt="Animation" src="https://github.com/user-attachments/assets/afe6b033-3f2c-4947-9585-5978d101f7e4" />
+<p align="center">
+  <img src="assets/Animation.gif" width="900"/>
+</p>
 
 ---

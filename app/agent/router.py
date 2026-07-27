@@ -8,6 +8,12 @@ from langchain_core.messages import SystemMessage, HumanMessage
 from app.models.llm import get_llm
 from app.agent.prompts import ROUTER_SYSTEM_PROMPT
 
+from app.core.logger import (
+    section,
+    thought,
+    action,
+    observation,
+)
 
 
 class RouterDecision(BaseModel):
@@ -24,13 +30,8 @@ class RouterDecision(BaseModel):
 
 
 def classify_intent(message: str) -> str:
-    """
-    Classify user message into a route.
-    """
-
 
     llm = get_llm()
-
 
     structured_llm = llm.with_structured_output(
         RouterDecision
@@ -44,7 +45,7 @@ def classify_intent(message: str) -> str:
             ),
             HumanMessage(
                 content=message
-            )
+            ),
         ]
     )
 

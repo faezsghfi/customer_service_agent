@@ -62,10 +62,14 @@ def build_graph():
     )
 
 
-    workflow.add_edge(
+    workflow.add_conditional_edges(
         "guardrail",
-        "router"
-    )
+        lambda state: state["route"],
+        {
+            "allowed": "router",
+            "blocked": END
+        }
+)
 
 
     workflow.add_conditional_edges(
